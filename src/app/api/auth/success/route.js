@@ -1,8 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function GET(request) {
   const { getUser } = getKindeServerSession();
@@ -12,17 +11,15 @@ export async function GET(request) {
     throw new Error("something went wrong with authentication" + user);
   }
 
-  console.log(user.id)
+  console.log("userId:", user.id);
 
   let dbUser = await prisma.user.findUnique({
     where: { kindeId: user.id },
   });
 
-  console.log("dbUser", dbUser)
-
+  console.log("dbUser:", dbUser ?? "no user found");
 
   if (!dbUser) {
-
     dbUser = await prisma.user.create({
       data: {
         kindeId: user.id,

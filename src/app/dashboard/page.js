@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { isAuthenticated, getUser } from "@/lib/auth";
 
 export default async function Dashboard () {
     return (
@@ -10,7 +9,7 @@ export default async function Dashboard () {
         <LogoutLink>
           <Button>Logout</Button>
         </LogoutLink>
-        <Textarea value={JSON.stringify(await getUser())}></Textarea>
+        {/* <Textarea value={JSON.stringify(await getUser())}></Textarea> */}
       </>
     );
 }

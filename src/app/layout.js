@@ -1,3 +1,6 @@
+//TODO: Check if user is authenticated and redirect to dashboard
+
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/app/AuthProvider";
