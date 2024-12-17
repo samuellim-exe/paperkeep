@@ -6,10 +6,6 @@ export default async function Dashboard () {
     return (
       <>
         <h1>Dashboard</h1>
-        <LogoutLink>
-          <Button>Logout</Button>
-        </LogoutLink>
-        {/* <Textarea value={JSON.stringify(await getUser())}></Textarea> */}
       </>
     );
 }
