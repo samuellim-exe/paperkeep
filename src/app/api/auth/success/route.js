@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
@@ -26,6 +25,7 @@ export async function GET(request) {
         firstName: user.given_name ?? "",
         lastName: user.family_name ?? "",
         email: user.email ?? "", // Using nullish coalescing operator to provide a default empty string value
+        username: user.username ?? "",
       },
     });
   }

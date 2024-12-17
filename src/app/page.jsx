@@ -6,8 +6,9 @@ import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  const {isAuthenticated} = useKindeBrowserClient();
-  isAuthenticated && redirect("/dashboard");
+  // const {isAuthenticated} = useKindeBrowserClient();
+  // isAuthenticated && redirect("/dashboard");
+  redirect("/dashboard");
   return (
     <>
       {/* <LoginLink>
