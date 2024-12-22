@@ -26,6 +26,7 @@ export async function GET(request) {
         lastName: user.family_name ?? "",
         email: user.email ?? "", // Using nullish coalescing operator to provide a default empty string value
         username: user.username ?? "",
+        currency: "MYR",  //TODO: maybe let user select currency/default to USD after signing up
       },
     });
   }

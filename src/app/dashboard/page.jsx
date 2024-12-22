@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+"use client"
 
-export default async function Dashboard () {
-    return (
-      <>
-        <h1>Dashboard</h1>
-      </>
-    );
+export default function Dashboard () {
+  return(
+    <>
+      <h1>Dashboard</h1>
+    </>
+  )
 }

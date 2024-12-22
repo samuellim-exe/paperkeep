@@ -1,12 +1,14 @@
-import {
-  authMiddleware,
-  withAuth,
-} from "@kinde-oss/kinde-auth-nextjs/middleware";
+import { createMiddleware } from "@rescale/nemo";
+import { dashboard } from "./middlewares/dashboard";
+import { transactionsApiMiddleware } from "./middlewares/api/transactions";
 
-export default function middleware(req) {
-  return withAuth(req, { loginPage: "/api/auth/login", isReturnToCurrentPage: false });
-}
+const middlewares = {
+  "/dashboard{/:slug}": [dashboard],
+  "/api/transactions{/:slug}": [transactionsApiMiddleware]
+};
+
+export const middleware = createMiddleware(middlewares);
 
 export const config = {
-  matcher: ["/dashboard"],
+  matcher: ["/((?!_next/|_static|_vercel|[\\w-]+\\.\\w+).*)"],
 };

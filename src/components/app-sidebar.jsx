@@ -1,6 +1,6 @@
 "use client"
 
-import { DollarSign, LayoutDashboard, PackageIcon } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle, CreditCard, DollarSign, LayoutDashboard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -25,10 +25,21 @@ const sidebarItems = [
     path: "/dashboard",
     icon: LayoutDashboard,
   },
+  {
+    label: "Incomes",
+    path: "/dashboard/incomes",
+    icon: DollarSign,
+  },
+  {
+    label: "Expenses",
+    path: "/dashboard/expenses",
+    icon: CreditCard,
+  }
 ];
 
 export default function AppSidebar() {
-    const {user} = useKindeBrowserClient();
+    const {getUser} = useKindeBrowserClient();
+    const user = getUser();
     const currentPath = usePathname();
     console.log(currentPath)
   return (

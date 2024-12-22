@@ -9,10 +9,44 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
-  kindeId   String @unique
-  email     String @unique
-  username  String 
+  id        Int       @id @default(autoincrement())
+  kindeId   String    @unique
+  email     String    @unique
+  username  String
   firstName String
   lastName  String
+  currency  Currency
+  Transactions Transaction[]
+}
+
+enum Currency {
+  MYR
+  USD
+  EUR
+  JPY
+  CNY
+  SGD
+}
+model Transaction {
+  id Int @id @default(autoincrement())
+  amount Int 
+  description String
+  recurring Boolean
+  recurringType RecurringType?
+  createdAt DateTime? @default(now())
+  transactionType TransactionType
+  userKindeId String
+  user User @relation(fields: [userKindeId], references: [kindeId])
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum RecurringType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
 }
