@@ -3,72 +3,13 @@
 import { columns } from "@/app/dashboard/incomes/_components/columns";
 import { DataTable } from "@/app/dashboard/incomes/_components/data-table";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTrigger,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import prisma from "@/lib/prisma";
 import { cn } from "@/lib/utils";
-import { Plus, PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import AddDialog from "./_components/add-dialog";
 
 export default function IncomesPage() {
-
-
-
-
-  // function saveIncome() {
-  //   //check if all the fields are filled
-  //   if (!amount || !description) {
-  //     console.log("Please fill all the fields");
-  //     toast.error("Please fill all the fields");
-  //     return;
-  //   }
-  //   console.log("Saving income...");
-  //   console.log("Amount:", amount);
-  //   console.log("Description:", description);
-  //   console.log("Recurring:", recurring);
-  //   console.log("Frequency:", frequency);
-  //   //
-  //   useEffect(() => {
-  //     async function sendreq() {
-  //       const response = await fetch("/api/transactions/incomes/create", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           amount,
-  //           description,
-  //           recurring,
-  //           frequency,
-  //         }),
-  //       });
-  //       const data = await response.json();
-  //       console.log(data);
-  //     }
-  //     sendreq();
-  //   }, [amount, description, recurring, frequency]);
-  //   console.log("Income saved:", income);
-  // }
-
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const [tableData, setTableData] = useState([]);
 
@@ -78,7 +19,7 @@ export default function IncomesPage() {
     let i = 0;
     //parse the date
     const parsedData = data.data.map((item) => {
-      i++
+      i++;
       return {
         ...item,
         count: i,
@@ -99,11 +40,17 @@ export default function IncomesPage() {
 
   return (
     <div>
-      <AddDialog fetchIncomes={fetchIncomes}>
-        <DialogTrigger className={cn(buttonVariants({ variant: "default" }))}>
-          <PlusIcon /> Add new Income
-        </DialogTrigger>
-        </AddDialog>
+      <Button
+        className={cn(buttonVariants({ variant: "default" }))}
+        onClick={() => setDialogOpen(true)}
+      >
+        <PlusIcon /> Add new Income
+      </Button>
+      <AddDialog
+        fetchIncomes={fetchIncomes}
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+      ></AddDialog>
       <DataTable columns={columns} data={tableData} />
     </div>
   );

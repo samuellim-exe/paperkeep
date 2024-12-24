@@ -1,17 +1,7 @@
-import { ColumnDef } from "@tanstack/react-table";
-
 export const columns = [
   {
     accessorKey: "count",
     header: "Count",
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-  },
-  {
-    accessorKey: "time",
-    header: "Time",
   },
   {
     accessorKey: "description",
@@ -20,6 +10,14 @@ export const columns = [
   {
     accessorKey: "amount",
     header: "Amount",
+  },
+  {
+    accessorKey: "date",
+    header: "Date",
+  },
+  {
+    accessorKey: "time",
+    header: "Time",
   },
   // {
   //     accessorKey: "recurringType",

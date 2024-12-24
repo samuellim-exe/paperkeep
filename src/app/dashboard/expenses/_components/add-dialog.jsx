@@ -25,7 +25,7 @@ import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-export default function AddDialog({ children, fetchExpenses }) {
+export default function AddDialog({ setDialogOpen, dialogOpen, fetchExpenses }) {
   const [now, setNow] = useState(new Date(Date.now()));
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
@@ -39,7 +39,6 @@ export default function AddDialog({ children, fetchExpenses }) {
         : now.getMinutes()
     }`
   );
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
   function handleAmountChange(event) {
@@ -116,7 +115,6 @@ export default function AddDialog({ children, fetchExpenses }) {
 
   return (
     <Dialog open={dialogOpen} onOpenChange={handleDialogOpen}>
-      {children}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add a new Expense</DialogTitle>
