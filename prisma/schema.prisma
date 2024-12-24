@@ -29,7 +29,7 @@ enum Currency {
 }
 model Transaction {
   id Int @id @default(autoincrement())
-  amount Int 
+  amount Float 
   description String
   recurring Boolean
   recurringType RecurringType?

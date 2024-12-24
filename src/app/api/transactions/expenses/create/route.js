@@ -12,6 +12,7 @@ export async function POST(request) {
         amount: parseFloat(requestBody.amount),
         description: requestBody.description,
         recurring: requestBody.recurring,
+        createdAt: new Date(requestBody.date),
         transactionType: "EXPENSE",
         user: {
             connect: {

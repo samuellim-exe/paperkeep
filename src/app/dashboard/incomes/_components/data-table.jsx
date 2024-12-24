@@ -1,14 +1,29 @@
 "use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React from "react";
+import {
+  MoreHorizontalIcon,
+  PencilIcon,
+  SaveIcon,
+  Trash2Icon,
+} from "lucide-react";
+import React, { useState } from "react";
 
 export function DataTable({ columns, data }) {
+  const [isEditing, setIsEditing] = useState(false);
   const table = useReactTable({
     data,
     columns,
@@ -32,27 +47,43 @@ export function DataTable({ columns, data }) {
                   </TableHead>
                 );
               })}
+              <TableHead>Actions</TableHead>
             </TableRow>
           ))}
         </TableHeader>
         <TableBody>
-            {
-                table.getRowModel().rows?.length ? (table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                        {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id} className={"capitalize"}>
-                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                ))) : (
-                    <TableRow>
-                        <TableCell colSpan={columns.length} className={"h-24 text-center"}>
-                            No results.
-                        </TableCell>
-                    </TableRow>
-                )
-            }
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className={"capitalize"}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+                <TableCell className="w-[220px]">
+                  <Button variant="icon">
+                    {/* <MoreHorizontalIcon /> */}
+                    {isEditing ? <SaveIcon /> : <PencilIcon />}
+                  </Button>
+                  <Button variant="icon" className="mx-0 px-0">
+                    <Trash2Icon />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className={"h-24 text-center"}
+              >
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

@@ -11,6 +11,6 @@ export async function GET(request) {
             transactionType: "INCOME"
         }
     })
-    console.log(res)
+    // console.log(res)
     return NextResponse.json({status: 200, data: res})
 }

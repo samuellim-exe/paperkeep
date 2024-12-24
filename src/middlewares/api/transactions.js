@@ -7,7 +7,7 @@ export const transactionsApiMiddleware = async ({request}) => {
         const user = await getUser()
         if(isUserAuthenticated){
                 console.log("transactionsAPIMiddleware: User is authenticated")
-                console.log(user)
+                console.log(user.username)
             return NextResponse.next()
         }
         return NextResponse.json({message: "Not Authenticated", status: 401})

@@ -21,8 +21,8 @@ export const columns = [
     accessorKey: "amount",
     header: "Amount",
   },
-  {
-    accessorKey: "recurringType",
-    header: "Recurring",
-  },
+//   {
+//     accessorKey: "recurringType",
+//     header: "Recurring",
+//   },
 ];
