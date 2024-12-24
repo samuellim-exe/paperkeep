@@ -2,8 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const columns = [
     {
-        accessorKey: 'id',
-        header: 'ID',
+        accessorKey: 'count',
+        header: 'Count',
     },
     {
         accessorKey: "createdAt",

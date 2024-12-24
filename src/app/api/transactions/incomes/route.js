@@ -7,7 +7,8 @@ export async function GET(request) {
     const user = await getUser();
     const res = await prisma.transaction.findMany({
         where: {
-            userKindeId: user.id
+            userKindeId: user.id,
+            transactionType: "INCOME"
         }
     })
     console.log(res)

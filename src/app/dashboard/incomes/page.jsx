@@ -1,7 +1,7 @@
 "use client";
 
-import { columns } from "@/components/transactions/incomes/columns";
-import { DataTable } from "@/components/transactions/incomes/data-table";
+import { columns } from "@/app/dashboard/incomes/_components/columns";
+import { DataTable } from "@/app/dashboard/incomes/_components/data-table";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
@@ -124,8 +124,9 @@ export default function IncomesPage() {
       setFrequency("");
       //fetch the updated data
       fetchIncomes();
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.log(err.message)
+      console.error(err);
       toast.error("An error occurred while saving the income");
     }
   };
@@ -135,10 +136,13 @@ export default function IncomesPage() {
   async function fetchIncomes() {
     const response = await fetch("/api/transactions/incomes");
     const data = await response.json();
+    let i = 0;
     //parse the date
     const parsedData = data.data.map((item) => {
+      i++
       return {
         ...item,
+        count: i,
         //format the date DD/MM/YYYY
         createdAt: new Date(item.createdAt).toLocaleDateString("en-MY"),
         amount: item.amount.toFixed(2),
