@@ -1,3 +1,5 @@
+import { DatePicker } from "@/components/datepicker";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -17,36 +19,59 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { useState } from "react";
+import prisma from "@/lib/prisma";
+import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { DatePicker } from "@/components/datepicker";
 
 export default function AddDialog({ children, fetchExpenses }) {
+  const [now, setNow] = useState(new Date(Date.now()));
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState(Date.now());
   const [recurring, setRecurring] = useState(false);
   const [frequency, setFrequency] = useState("");
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
+  const [date, setDate] = useState(Date.now());
+  const [time, setTime] = useState(
+    `${now.getHours()}:${
+      now.getMinutes().toString().length === 1
+        ? "0" + now.getMinutes()
+        : now.getMinutes()
+    }`
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
-  function handleDialogOpen() {
-    setDialogOpen(!dialogOpen);
-    setSubmitButtonDisabled(false);
-  }
   function handleAmountChange(event) {
     setAmount(event.target.value);
   }
   function handleDescriptionChange(event) {
     setDescription(event.target.value);
   }
+  function handleTimeChange(event) {
+    setTime(event.target.value);
+  }
   function handleToggleRecurring() {
     setRecurring(!recurring);
   }
+  function handleFrequencyChange(event) {
+    setFrequency(event.target.value);
+  }
+  function handleDialogOpen() {
+    setDialogOpen(!dialogOpen);
+    setSubmitButtonDisabled(false);
+    setNow(new Date(Date.now()));
+    setTime(
+      `${now.getHours()}:${
+        now.getMinutes().toString().length === 1
+          ? "0" + now.getMinutes()
+          : now.getMinutes()
+      }`
+    );
+  }
 
   const handleSaveExpense = async () => {
-    if (!amount || !description || !date) {
+    if (!amount || !description) {
       console.log("Please fill all the fields");
       toast.error("Please fill all the fields");
       return;
@@ -56,7 +81,6 @@ export default function AddDialog({ children, fetchExpenses }) {
       toast.error("Please select a frequency");
       return;
     }
-
     try {
       const response = await fetch("/api/transactions/expenses/create", {
         method: "POST",
@@ -68,11 +92,11 @@ export default function AddDialog({ children, fetchExpenses }) {
           description,
           recurring,
           frequency: frequency.toUpperCase(),
-          date,
+          date: new Date(date),
+          time: time,
         }),
       });
       const data = await response.json();
-      console.log(data);
       toast.success("Expense saved successfully");
       setDialogOpen(false);
       setSubmitButtonDisabled(true);
@@ -81,14 +105,15 @@ export default function AddDialog({ children, fetchExpenses }) {
       setDescription("");
       setRecurring(false);
       setFrequency("");
-      //fetch updated data
+      //fetch the updated data
       fetchExpenses();
     } catch (err) {
       console.log(err.message);
       console.error(err);
-      toast.error("An error occured while saving the expense");
+      toast.error("An error occurred while saving the expense");
     }
   };
+
   return (
     <Dialog open={dialogOpen} onOpenChange={handleDialogOpen}>
       {children}
@@ -96,9 +121,7 @@ export default function AddDialog({ children, fetchExpenses }) {
         <DialogHeader>
           <DialogTitle>Add a new Expense</DialogTitle>
         </DialogHeader>
-        <DialogDescription>
-          Add a new expense to your account.
-        </DialogDescription>
+        <DialogDescription>Add a new expense to your account.</DialogDescription>
         <Label htmlFor="amount">Amount</Label>
         <Input
           type="number"
@@ -118,7 +141,16 @@ export default function AddDialog({ children, fetchExpenses }) {
           onChange={handleDescriptionChange}
         />
         <Label htmlFor="date">Date</Label>
-        <DatePicker id="date" date={date} setDate={setDate}/>
+        <DatePicker id="date" date={date} setDate={setDate} />
+        <Label htmlFor="time">Time</Label>
+        <Input
+          type="time"
+          id="time"
+          placeholder="00:00:00"
+          className="mb-1 w-fit"
+          value={time}
+          onChange={handleTimeChange}
+        />
         {/* <div className="flex items-center space-x-2">
           <Switch
             id="recurring"
