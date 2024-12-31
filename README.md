@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PaperKeep
 
-## Getting Started
+**PaperKeep** is a simple, user-friendly expense and income tracker that helps you log your daily financial activities and monitor them over time. Whether you want to manage your budget, keep track of your spending habits, or gain insights into your financial health, PaperKeep is here to help.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Expense Logging**: Record your daily expenses with categories, dates, and notes.
+- **Income Tracking**: Log your income sources to keep track of earnings.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Framework**: Next.js
+- **Database**: PostgreSQL 
+- **Authentication**: Kinde
+- **Styling**: Tailwind CSS , shadcn/ui
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Installation
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js (v14+)
+- npm or yarn
+- Postgresql (running instance)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Steps
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/samuellim-exe/paperkeep.git
+   cd paperkeep
+   ```
 
-## Deploy on Vercel
+2. Install dependencies: (might have to use --force)
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Configure environment variables:
+   Create a `.env` file in the root directory and add the required variables:
+   ```env
+   DATABASE_URL=<your-database-url>
+KINDE_CLIENT_ID=<your-kinde-client-id>
+KINDE_CLIENT_SECRET=<your-kinde-client-secret>
+KINDE_ISSUER_URL=https://<your-username>.kinde.com
+KINDE_SITE_URL=http://localhost:3000
+KINDE_POST_LOGOUT_REDIRECT_URL=http://localhost:3000
+KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/api/auth/success
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Open your browser and navigate to `http://localhost:3000`.
+
+## Usage
+
+1. **Sign Up / Log In**: Create an account to start logging your transactions.
+2. **Add Entries**: Click on "Add Expense" or "Add Income" to record your transactions.
+
+## Contributing
+
+Contributions are welcome! To contribute:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature-name`).
+5. Open a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Start managing your finances effectively with **PaperKeep**!
