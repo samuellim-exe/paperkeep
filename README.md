@@ -10,7 +10,7 @@
 ## Tech Stack
 
 - **Framework**: Next.js
-- **Database**: PostgreSQL 
+- **Database**: PostgreSQL
 - **Authentication**: Kinde
 - **Styling**: Tailwind CSS , shadcn/ui
 
@@ -25,27 +25,29 @@
 ### Steps
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/samuellim-exe/paperkeep.git
    cd paperkeep
    ```
-
 2. Install dependencies: (might have to use --force)
+
    ```bash
    npm install
    ```
-
 3. Configure environment variables:
    Create a `.env` file in the root directory and add the required variables:
+
    ```env
    DATABASE_URL=<your-database-url>
-KINDE_CLIENT_ID=<your-kinde-client-id>
-KINDE_CLIENT_SECRET=<your-kinde-client-secret>
-KINDE_ISSUER_URL=https://<your-username>.kinde.com
-KINDE_SITE_URL=http://localhost:3000
-KINDE_POST_LOGOUT_REDIRECT_URL=http://localhost:3000
-KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/api/auth/success
+   KINDE_CLIENT_ID=`<your-kinde-client-id>`
+   KINDE_CLIENT_SECRET=`<your-kinde-client-secret>`
+   KINDE_ISSUER_URL=https://`<your-username>`.kinde.com
+   KINDE_SITE_URL=http://localhost:3000
+   KINDE_POST_LOGOUT_REDIRECT_URL=http://localhost:3000
+   KINDE_POST_LOGIN_REDIRECT_URL=http://localhost:3000/api/auth/success
    ```
+
 
 4. Start the development server:
    ```bash
