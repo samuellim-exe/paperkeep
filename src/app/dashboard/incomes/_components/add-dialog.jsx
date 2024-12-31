@@ -39,7 +39,7 @@ export default function AddDialog({ setDialogOpen, dialogOpen, fetchIncomes }) {
         : now.getMinutes()
     }`
   );
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
   function handleAmountChange(event) {
     setAmount(event.target.value);
   }

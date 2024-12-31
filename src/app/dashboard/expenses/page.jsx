@@ -65,6 +65,23 @@ export default function ExpensesPage() {
     }
   }
 
+  async function deleteExpense(expenseId) {
+    const response = await fetch(`/api/transactions/expenses/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: expenseId }),
+    });
+
+    if (response.ok) {
+      toast.success("Expense deleted successfully");
+      fetchExpenses();
+    } else {
+      toast.error("Failed to delete expense");
+    }
+  }
+
   useEffect(() => {
     fetchExpenses();
   }, []);
@@ -75,14 +92,14 @@ export default function ExpensesPage() {
         className={cn(buttonVariants({ variant: "default" }))}
         onClick={() => setDialogOpen(true)}
       >
-        <PlusIcon /> Add new Income
+        <PlusIcon /> Add new Expense
       </Button>
       <AddDialog
         fetchExpenses={fetchExpenses}
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
       ></AddDialog>
-      <DataTable columns={columns} data={tableData} onUpdate={updateExpense} />
+      <DataTable columns={columns} data={tableData} onUpdate={updateExpense} onDelete={deleteExpense} />
     </div>
   );
 }

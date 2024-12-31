@@ -19,13 +19,15 @@ import {
   PencilIcon,
   SaveIcon,
   Trash2Icon,
+  XIcon,
 } from "lucide-react";
 import React, { useState } from "react";
 import { DatePicker } from "@/components/datepicker";
 import { Input } from "@/components/ui/input";
 
-export function DataTable({ columns, data, onUpdate }) {
+export function DataTable({ columns, data, onUpdate, onDelete }) {
   const [isEditing, setIsEditing] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(null);
   const [editedRow, setEditedRow] = useState({});
   const [datepicked, setDatepicked] = useState(Date.now());
 
@@ -34,11 +36,22 @@ export function DataTable({ columns, data, onUpdate }) {
     setEditedRow(row.original);
   };
 
+  const handleDeleteClick = (row) => {
+    setIsDeleting(row.id);
+  };
+
+  const handleCancelDeleteClick = () => {
+    setIsDeleting(null);
+  };
+
+  const handleConfirmDeleteClick = (row) => {
+    onDelete(row.original.id);
+    setIsDeleting(null);
+  };
+
   const handleSaveClick = () => {
     const formattedDate = new Date(datepicked).toLocaleDateString("en-GB");
-    console.log("formatted date", formattedDate);
     editedRow.date = formattedDate;
-    console.log("edited row date", editedRow.date);
     onUpdate(editedRow);
     setIsEditing(null);
   };
@@ -50,15 +63,15 @@ export function DataTable({ columns, data, onUpdate }) {
 
   const handleDateChange = () => {
     const formattedDate = new Date(datepicked).toLocaleDateString("en-GB");
-    console.log("formatted date", formattedDate);
     setEditedRow((prev) => ({ ...prev, date: formattedDate }));
-    console.log("edited row date", editedRow.date);
   };
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -119,19 +132,32 @@ export function DataTable({ columns, data, onUpdate }) {
                   </TableCell>
                 ))}
                 <TableCell className="w-[220px]">
-                  <Button
-                    variant="icon"
-                    onClick={() =>
-                      isEditing === row.id
-                        ? handleSaveClick()
-                        : handleEditClick(row)
-                    }
-                  >
-                    {isEditing === row.id ? <SaveIcon /> : <PencilIcon />}
-                  </Button>
-                  <Button variant="icon" className="mx-0 px-0">
-                    <Trash2Icon />
-                  </Button>
+                  {isDeleting === row.id ? (
+                    <>
+                      <Button variant="icon" onClick={() => handleConfirmDeleteClick(row)}>
+                        <Trash2Icon className="text-red-500" />
+                      </Button>
+                      <Button variant="icon" onClick={handleCancelDeleteClick}>
+                        <XIcon />
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="icon"
+                        onClick={() =>
+                          isEditing === row.id
+                            ? handleSaveClick()
+                            : handleEditClick(row)
+                        }
+                      >
+                        {isEditing === row.id ? <SaveIcon /> : <PencilIcon />}
+                      </Button>
+                      <Button variant="icon" onClick={() => handleDeleteClick(row)}>
+                        <Trash2Icon />
+                      </Button>
+                    </>
+                  )}
                 </TableCell>
               </TableRow>
             ))

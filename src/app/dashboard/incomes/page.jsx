@@ -61,6 +61,23 @@ export default function IncomesPage() {
     }
   }
 
+  async function deleteIncome(incomeId) {
+    const response = await fetch(`/api/transactions/incomes/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: incomeId }),
+    });
+
+    if (response.ok) {
+      toast.success("Income deleted successfully");
+      fetchIncomes();
+    } else {
+      toast.error("Failed to delete income");
+    }
+  }
+
   useEffect(() => {
     fetchIncomes();
   }, []);
@@ -78,7 +95,7 @@ export default function IncomesPage() {
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
       ></AddDialog>
-      <DataTable columns={columns} data={tableData} onUpdate={updateIncome} />
+      <DataTable columns={columns} data={tableData} onUpdate={updateIncome} onDelete={deleteIncome} />
     </div>
   );
 }
