@@ -14,11 +14,46 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MoreHorizontalIcon, PencilIcon, SaveIcon, Trash2Icon } from "lucide-react";
+import {
+  MoreHorizontalIcon,
+  PencilIcon,
+  SaveIcon,
+  Trash2Icon,
+} from "lucide-react";
 import React, { useState } from "react";
+import { DatePicker } from "@/components/datepicker";
+import { Input } from "@/components/ui/input";
 
-export function DataTable({ columns, data }) {
-  const [isEditing, setIsEditing] = useState(false);
+export function DataTable({ columns, data, onUpdate }) {
+  const [isEditing, setIsEditing] = useState(null);
+  const [editedRow, setEditedRow] = useState({});
+  const [datepicked, setDatepicked] = useState(Date.now());
+
+  const handleEditClick = (row) => {
+    setIsEditing(row.id);
+    setEditedRow(row.original);
+  };
+
+  const handleSaveClick = () => {
+    const formattedDate = new Date(datepicked).toLocaleDateString("en-GB");
+    console.log("formatted date", formattedDate);
+    editedRow.date = formattedDate;
+    console.log("edited row date", editedRow.date);
+    onUpdate(editedRow);
+    setIsEditing(null);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedRow((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleDateChange = () => {
+    const formattedDate = new Date(datepicked).toLocaleDateString("en-GB");
+    console.log("formatted date", formattedDate);
+    setEditedRow((prev) => ({ ...prev, date: formattedDate }));
+    console.log("edited row date", editedRow.date);
+  };
   const table = useReactTable({
     data,
     columns,
@@ -55,13 +90,44 @@ export function DataTable({ columns, data }) {
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className={"capitalize"}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {isEditing === row.id ? (
+                      cell.column.id === "date" ? (
+                        <DatePicker
+                          selected={new Date(editedRow.date)}
+                          onChange={handleDateChange}
+                          date={datepicked}
+                          setDate={setDatepicked}
+                        />
+                      ) : cell.column.id === "time" ? (
+                        <Input
+                          type="time"
+                          name="time"
+                          value={editedRow.time}
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <Input
+                          type="text"
+                          name={cell.column.id}
+                          value={editedRow[cell.column.id]}
+                          onChange={handleChange}
+                        />
+                      )
+                    ) : (
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
                   </TableCell>
                 ))}
                 <TableCell className="w-[220px]">
-                  <Button variant="icon">
-                    {/* <MoreHorizontalIcon /> */}
-                    {isEditing ? <SaveIcon /> : <PencilIcon />}
+                  <Button
+                    variant="icon"
+                    onClick={() =>
+                      isEditing === row.id
+                        ? handleSaveClick()
+                        : handleEditClick(row)
+                    }
+                  >
+                    {isEditing === row.id ? <SaveIcon /> : <PencilIcon />}
                   </Button>
                   <Button variant="icon" className="mx-0 px-0">
                     <Trash2Icon />

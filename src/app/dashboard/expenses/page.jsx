@@ -27,7 +27,7 @@ export default function ExpensesPage() {
       return {
         ...item,
         //count items
-        count: i,
+        // count: i,
         //format the date
         date: new Date(item.createdAt).toLocaleDateString("en-MY"),
         time: new Date(item.createdAt).toLocaleTimeString("en-GB"),
@@ -35,8 +35,34 @@ export default function ExpensesPage() {
         recurringType: item.recurring ? item.recurringType.toLowerCase() : "-",
       };
     });
+
+    // Sort the parsed data by date and time
+    parsedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    // Reset the count after sorting
+    parsedData.forEach((item, index) => {
+      item.count = index + 1;
+    });
+
     setTableData(parsedData);
     console.log(data);
+  }
+
+  async function updateExpense(updatedExpense) {
+    const response = await fetch("/api/transactions/expenses/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedExpense),
+    });
+
+    if (response.ok) {
+      toast.success("Expense updated successfully");
+      fetchExpenses();
+    } else {
+      toast.error("Failed to update expense");
+    }
   }
 
   useEffect(() => {
@@ -56,7 +82,7 @@ export default function ExpensesPage() {
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
       ></AddDialog>
-      <DataTable columns={columns} data={tableData} />
+      <DataTable columns={columns} data={tableData} onUpdate={updateExpense} />
     </div>
   );
 }

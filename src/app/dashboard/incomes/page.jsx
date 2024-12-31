@@ -6,7 +6,9 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import AddDialog from "./_components/add-dialog";
+import { DialogTrigger } from "@/components/ui/dialog";
 
 export default function IncomesPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -22,7 +24,7 @@ export default function IncomesPage() {
       i++;
       return {
         ...item,
-        count: i,
+        // count: i,
         //format the date DD/MM/YYYY
         date: new Date(item.createdAt).toLocaleDateString("en-MY"),
         time: new Date(item.createdAt).toLocaleTimeString("en-GB"),
@@ -30,8 +32,33 @@ export default function IncomesPage() {
         recurringType: item.recurring ? item.recurringType.toLowerCase() : "-",
       };
     });
+    // Sort the parsed data by date and time
+    parsedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    // Reset the count after sorting
+    parsedData.forEach((item, index) => {
+      item.count = index + 1;
+    });
+
     setTableData(parsedData);
     // console.log(data);
+  }
+
+  async function updateIncome(updatedIncome) {
+    const response = await fetch("/api/transactions/incomes/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedIncome),
+    });
+
+    if (response.ok) {
+      toast.success("Income updated successfully");
+      fetchIncomes();
+    } else {
+      toast.error("Failed to update income");
+    }
   }
 
   useEffect(() => {
@@ -51,7 +78,7 @@ export default function IncomesPage() {
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
       ></AddDialog>
-      <DataTable columns={columns} data={tableData} />
+      <DataTable columns={columns} data={tableData} onUpdate={updateIncome} />
     </div>
   );
 }

@@ -10,7 +10,7 @@ export async function POST(req) {
   let formattedDate = new Date(`${year}-${month}-${day}T${time}`);
   console.log("formatted date", formattedDate);
   try {
-    const updatedExpense = await prisma.transaction.update({
+    const updatedIncome = await prisma.transaction.update({
       where: { id },
       data: {
         description,
@@ -18,7 +18,7 @@ export async function POST(req) {
         createdAt: formattedDate,
       },
     });
-    return NextResponse.json({ status: 200, data: updatedExpense });
+    return NextResponse.json({ status: 200, data: updatedIncome });
   } catch (error) {
     console.log(error.message);
     return NextResponse.json({ status: 500, message: "Internal Server Error" });
